@@ -14,7 +14,6 @@ import AboutPage from './compo/AboutPage'
 
 function App() {
   const isToken = localStorage.getItem("Token")
-  // console.log(isToken)
   return (
     <Router>
     <>
