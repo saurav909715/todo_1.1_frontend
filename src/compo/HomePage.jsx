@@ -183,11 +183,24 @@ export default function HomePage() {
       <Navbar>
         <Logo>tOdU</Logo>
         <NavLinks>
-          <h2><NavLink to="/about" >About</NavLink></h2>
-          <h2>
-            Hi <Username>{userName || "Guest"}</Username>
-          </h2>
-          <h4 onClick={ () => setLogout(true) } >Logout</h4>
+          <div className="lat">
+            <h2>
+              Hi 
+            </h2>
+            <h6><Username>{userName || "Guest"}</Username></h6>
+          </div>
+          <div className="lits">
+            <h2 id='re' ><NavLink to="/about" >About</NavLink></h2>
+            <h4 id='re' onClick={ () => setLogout(true) } >Logout</h4>
+          </div>
+
+          <div className="er">
+          <div className="lists">
+              <h2  ><NavLink to="/about" ><i className="ri-information-line"></i></NavLink></h2>
+              <h4  onClick={ () => setLogout(true) } ><i className="ri-logout-box-r-line"></i></h4>
+          </div>
+          </div>
+
         </NavLinks>
       </Navbar>
 
@@ -326,6 +339,7 @@ const Navbar = styled.nav`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: #1f2937;
   padding: 20px;
   color: white;
@@ -334,8 +348,37 @@ const Navbar = styled.nav`
   li{
     color: pink;
   }
+  .lat{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .lits{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lists{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+  .er{
+    display: none;
+  }
   @media (max-width: 800px) {
     padding: 10px;
+    #re{
+      display: none;
+    }
+    .er{
+      display: block;
+    }
   }
 `;
 
@@ -343,6 +386,7 @@ const Logo = styled.h1`
   font-size: 2.5rem;
   font-weight: bold;
   color: #f97316;
+  margin-left: 30px;
 `;
 const NavLinks = styled.div`
   display: flex;
@@ -381,6 +425,9 @@ const NavLinks = styled.div`
 const Username = styled.span`
   color: #f97316;
   font-size: 18px;
+  @media (max-width: 800px) {
+    font-size: 15px;
+  }
 `;
 
 const Center = styled.div`

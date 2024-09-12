@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { toast,Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { NavLink } from "react-router-dom";
+
 
 export default function LandingPage() {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -138,7 +140,7 @@ export default function LandingPage() {
         </div>
         <p className="signup-text">
           Don't have an account? <a onClick={handleSignUpClick}>SignUp here</a>
-        </p>
+        </p >
       </div>
 
       {showSignUp && (
@@ -173,6 +175,8 @@ export default function LandingPage() {
           </div>
         </div>
       )}
+        <div id='info' ><NavLink to="/about"><i className="ri-information-line"></i></NavLink></div>
+
     </DIV>
   );
 }
@@ -185,6 +189,20 @@ const DIV = styled.div`
   align-items: center;
   background-color: #f0f0f0;
   position: relative;
+
+  #info{
+    position: fixed;
+    z-index: 99999;
+    bottom: 20px;
+    right: 20px;
+  }
+  #info a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  #info i {
+    font-size: 25px;
+  }
 
   .main {
     background-color: #fff;
@@ -201,6 +219,7 @@ const DIV = styled.div`
   .main.blurred {
     filter: blur(5px);
   }
+
 
   h1 {
     font-size: 28px;
