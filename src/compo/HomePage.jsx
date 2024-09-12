@@ -508,6 +508,8 @@ const TaskList = styled.ul`
 `;
 
 const EditButton = styled.button`
+  opacity: 50%;
+
   background-color: #3b82f6;
   color: white;
   padding: 8px 12px;
@@ -518,11 +520,14 @@ const EditButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #2563eb;
+    background-color: #2563eb;  opacity: 100%;
+
   }
 `;
 
 const DeleteButton = styled.button`
+  opacity: 50%;
+
   background-color: #ef4444;
   color: white;
   padding: 8px 12px;
@@ -533,7 +538,8 @@ const DeleteButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #dc2626;
+    background-color: #dc2626;  opacity: 100%;
+
   }
 `;
 
