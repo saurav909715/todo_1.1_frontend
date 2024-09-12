@@ -8,7 +8,6 @@ import { NavLink } from "react-router-dom";
 
 export default function LandingPage() {
   const [showSignUp, setShowSignUp] = useState(false);
-  const baseLink = "https://todo-1-1-1.onrender.com/api/"
   
 
   const [user, setUser] = useState({
@@ -34,7 +33,7 @@ export default function LandingPage() {
     e.preventDefault();
     console.log(user);
     try {
-      const response = await fetch(`${baseLink}/reg`, {
+      const response = await fetch(`${import.meta.env.VITE_AA}/api/reg`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +70,7 @@ export default function LandingPage() {
     // console.log(login);
     try {
       // Send login details directly, not wrapped inside another object
-      const response = await axios.post(`${baseLink}/login`, login);
+      const response = await axios.post(`${import.meta.env.VITE_AA}/api/login`, login);
       
       const data = response.data;  // axios automatically parses the response
       const passTrue = data.isPassTrue;

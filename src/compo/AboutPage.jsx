@@ -32,7 +32,6 @@ export default function AboutPage() {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const isValidName = msg.name.length > 3;
         const isValidEmail = emailPattern.test(msg.email);
-        const baseLink = "https://todo-1-1-1.onrender.com/api"
         
         if (!isValidName || !isValidEmail) {
             setErrors({
@@ -54,7 +53,7 @@ export default function AboutPage() {
         }
 
         try {
-            const response = await axios.post(`${baseLink}/contactUs`, msg);
+            const response = await axios.post(`${import.meta.env.VITE_AA}/api/contactUs`, msg);
             toast.success('Message Sent', {
                 position: "top-left",
                 autoClose: 1000,

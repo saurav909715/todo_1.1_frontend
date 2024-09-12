@@ -15,7 +15,6 @@ export default function HomePage() {
   const [logout, setLogout] = useState(null); // For tracking the todo being edited
    // For tracking the todo being edited
   const [editText, setEditText] = useState(""); // Input for editing text
-  const baseLink = "https://todo-1-1-1.onrender.com/api"
 
 
   // Add Task
@@ -37,7 +36,7 @@ export default function HomePage() {
     }
     try {
       const response = await axios.post(
-        `${baseLink}/todos/post`,
+        `${import.meta.env.VITE_AA}/api/todos/post`,
         { text: text.text },
         {
           headers: {
@@ -76,7 +75,7 @@ export default function HomePage() {
 
   // Fetch Todos
   const fetchTodos = async () => {
-    const response = await axios.get(`${baseLink}/todos`, {
+    const response = await axios.get(`${import.meta.env.VITE_AA}/api/todos`, {
       headers: {
         Authorization: `${userToken}`,
         'Content-Type': 'application/json',
@@ -88,7 +87,7 @@ export default function HomePage() {
   // Delete Todo
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${baseLink}/todos/del/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_AA}/api/todos/del/${id}`, {
         headers: {
           Authorization: `${userToken}`,
         },
@@ -133,7 +132,7 @@ export default function HomePage() {
     e.preventDefault();
     try {
       await axios.put(
-        `${baseLink}/todos/update/${editTodo._id}`,{
+        `${import.meta.env.VITE_AA}/api/todos/update/${editTodo._id}`,{
           text: editText,
         }
       );
