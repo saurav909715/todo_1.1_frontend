@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { toast,Flip } from 'react-toastify';
+import { toast, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import { NavLink } from "react-router-dom";
-
+import { NavLink } from 'react-router-dom';
 
 export default function LandingPage() {
   const [showSignUp, setShowSignUp] = useState(false);
-  
+  const [showNotice, setShowNotice] = useState(false);
+  const [noticeTimeout, setNoticeTimeout] = useState(null);
 
   const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   });
 
   const [login, setLogin] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleInput = (e) => {
@@ -32,6 +32,11 @@ export default function LandingPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(user);
+    
+    // Set a timer to show the notice if the request takes more than 2 seconds
+    const timer = setTimeout(() => setShowNotice(true), 2000);
+    setNoticeTimeout(timer);
+
     try {
       const response = await fetch(`${import.meta.env.VITE_AA}/api/reg`, {
         method: 'POST',
@@ -43,67 +48,74 @@ export default function LandingPage() {
 
       const data = await response.json();
       console.log(data.token);
+
+      // Clear the timer if the request completes before 2 seconds
+      clearTimeout(timer);
+
       setShowSignUp(false);
-      localStorage.setItem("Token", data.token);
-      localStorage.setItem("Username", data.name);
-      toast.success("Regstration");
+      localStorage.setItem('Token', data.token);
+      localStorage.setItem('Username', data.name);
+      toast.success('Registration');
       setTimeout(() => {
         window.location.href = '/';
+        setShowNotice(false);
       }, 500);
-      toast.info('Regstration Sucesfull✔️', {
-        position: "top-left",
+      toast.info('Registration Successful✔️', {
+        position: 'top-left',
         autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: 'light',
         transition: Flip,
-        });
+      });
     } catch (error) {
       console.error(error);
+      clearTimeout(timer);
     }
   };
+
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
-    // console.log(login);
+
+    // Set a timer to show the notice if the request takes more than 2 seconds
+    const timer = setTimeout(() => setShowNotice(true), 2000);
+    setNoticeTimeout(timer);
+
     try {
-      // Send login details directly, not wrapped inside another object
       const response = await axios.post(`${import.meta.env.VITE_AA}/api/login`, login);
-      
-      const data = response.data;  // axios automatically parses the response
+
+      const data = response.data;
       const passTrue = data.isPassTrue;
-      // console.log(response.data)
-      // console.log(response.data.isExist)
-  
+
       setShowSignUp(false);
-      if(response.data.isExist){
-        // console.log(passTrue)
+
+      clearTimeout(timer);
+
+      if (data.isExist) {
         if (passTrue) {
-          localStorage.setItem("Token", data.token);
-          localStorage.setItem("Username", data.name);
-          toast.success("Login Successfully. Redirecting...");
+          localStorage.setItem('Token', data.token);
+          localStorage.setItem('Username', data.name);
+          toast.success('Login Successfully. Redirecting...');
           setTimeout(() => {
             window.location.href = '/';
+            setShowNotice(false);
           }, 2000);
-          
         } else {
-          console.log("Invalid Password");
-          toast.error("Invalid Password");
+          console.log('Invalid Password');
+          toast.error('Invalid Password');
         }
-      }else{
-        toast.info("User dons't exit")
+      } else {
+        toast.info("User doesn't exist");
       }
-
-      
-      
-  
     } catch (error) {
       console.error(error);
+      clearTimeout(timer);
     }
   };
-  
+
   const handleSignUpClick = () => {
     setShowSignUp(true);
   };
@@ -139,9 +151,16 @@ export default function LandingPage() {
         </div>
         <p className="signup-text">
           Don't have an account? <a onClick={handleSignUpClick}>SignUp here</a>
-        </p >
+        </p>
       </div>
-
+      {showNotice &&
+  <div className="notice">
+    <p>Important Notice:</p>
+    <p>Due to resource conservation, our AI model may enter a dormant state after a period of inactivity.</p>
+    <p>If you experience a delay of 50 seconds or more during login, please be patient as our AI model is spinning up to assist you.</p>
+    <p>We appreciate your understanding and apologize for any inconvenience this may cause.</p>
+  </div>
+}
       {showSignUp && (
         <div className="signup-modal">
           <div className="signup-content">
@@ -174,8 +193,9 @@ export default function LandingPage() {
           </div>
         </div>
       )}
-        <div id='info' ><NavLink to="/about"><i className="ri-information-line"></i></NavLink></div>
-
+      <div id='info'>
+        <NavLink to="/about"><i className="ri-information-line"></i></NavLink>
+      </div>
     </DIV>
   );
 }
@@ -188,6 +208,35 @@ const DIV = styled.div`
   align-items: center;
   background-color: #f0f0f0;
   position: relative;
+  .notice {
+  position: fixed;
+  bottom: 0px;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.notice p {
+  text-align: center;
+  @media (max-width : 800px) {
+    font-size: 12px;
+  }
+}
+
+.notice p:first-child {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  @media (max-width : 800px) {
+    font-size: 15px;
+  }
+}
 
   #info{
     position: fixed;
